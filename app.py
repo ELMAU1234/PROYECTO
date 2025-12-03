@@ -7,9 +7,17 @@ from functools import wraps
 app = Flask(__name__)
 app.secret_key = "1234"
 
-db = MySQLdb.connect(host="localhost", user="root", passwd="", db="parque", charset="utf8")
+import os
 
 
+db = MySQLdb.connect(
+    host=os.environ.get("DB_HOST"),
+    user=os.environ.get("DB_USERNAME"),   # aquí va DB_USERNAME, no DB_USER
+    passwd=os.environ.get("DB_PASSWORD"),
+    db=os.environ.get("DB_NAME"),
+    port=int(os.environ.get("DB_PORT")),
+    charset="utf8"
+)
 #PARA Q PIDA PRIMERO EL LOGIN
 def login_required(f):
     @wraps(f)
